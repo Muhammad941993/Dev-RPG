@@ -10,12 +10,15 @@ namespace RPG.Movement
         private NavMeshAgent _agent;
         private ActionScheduler _actionScheduler;
 
-        [SerializeField] Animator animator;
+        private Animator _animator;
+        private readonly int _forwardSpeedHash = Animator.StringToHash("forwardSpeed");
 
+        
         void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
             _actionScheduler = GetComponent<ActionScheduler>();
+            _animator = GetComponent<Animator>();
         }
 
         void Update()
@@ -27,7 +30,7 @@ namespace RPG.Movement
         {
             Vector3 velocity = _agent.velocity;
             Vector3 localVelocity = transform.InverseTransformDirection(velocity);
-            animator.SetFloat("speed", localVelocity.z);
+            _animator.SetFloat(_forwardSpeedHash, localVelocity.z);
         }
 
         public void MovementTo(Vector3 destination)

@@ -4,50 +4,83 @@ using UnityEngine;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour ,IAction
+    public class Fighter : MonoBehaviour, IAction
     {
-        [SerializeField] float weaponRange;
-        private Transform _target;
+        [SerializeField] private float weaponRange;
+        [SerializeField] private float timeBetweenAttacks;
+        [SerializeField] private float weaponDamage;
+        private float _timeSinceLastAttack;
+        private Health _target;
         private Mover _movement;
         private ActionScheduler _actionScheduler;
+        private Animator _animator;
 
+
+        private readonly int _attackHash = Animator.StringToHash("attack");
+        private readonly int _stopAttackHash = Animator.StringToHash("stopAttack");
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
+            _animator = GetComponent<Animator>();
             _movement = GetComponent<Mover>();
             _actionScheduler = GetComponent<ActionScheduler>();
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            if(_target == null) return;
-            
+            _timeSinceLastAttack += Time.deltaTime;
+            if (_target == null || _target.IsDead) return;
+
             if (!IsTargetInRange())
             {
-                _movement.MovementTo(_target.position);
+                _movement.MovementTo(_target.transform.position);
             }
             else
             {
                 _movement.Cancle();
+                AttackBehaviour();
             }
+        }
+
+        private void AttackBehaviour()
+        {
+            if (_timeSinceLastAttack < timeBetweenAttacks) return;
+            _timeSinceLastAttack = 0;
+            transform.LookAt(_target.transform.position);
+            // the animation will trigger Hit() event
+            _animator.SetTrigger(_attackHash);
         }
 
         private bool IsTargetInRange()
         {
-            return Vector3.Distance(transform.position, _target.position) < weaponRange;
+            return Vector3.Distance(transform.position, _target.transform.position) < weaponRange;
         }
 
         public void Attack(CombatTarget combatTarget)
         {
-            _target = combatTarget.transform;
+            _target = combatTarget.GetComponent<Health>();
+            _animator.ResetTrigger(_stopAttackHash);
             _actionScheduler.StartAction(this);
         }
 
         public void Cancle()
         {
             _target = null;
+            _animator.SetTrigger(_stopAttackHash);
+        }
+
+        // animation Hit
+        private void Hit()
+        {
+            _target?.TakeDamage(weaponDamage);
+        }
+
+        public bool CanAttack(Health target)
+        {
+            if(target == null || target.IsDead) return false;
+            return true;
         }
     }
 }

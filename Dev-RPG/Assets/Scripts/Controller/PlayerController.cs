@@ -32,11 +32,12 @@ namespace RPG.Control
         {
             if (Input.GetMouseButtonDown(0))
             {
-                 _rayHits = Physics.RaycastAll(GetMouseRay());
+                _rayHits = Physics.RaycastAll(GetMouseRay());
                 foreach (var hit in _rayHits)
                 {
                     var target = hit.collider.GetComponent<CombatTarget>();
                     if (target == null) continue;
+                    if (!_fighter.CanAttack(target.GetComponent<Health>())) continue;
 
                     _fighter.Attack(target);
                     return true;
@@ -54,8 +55,10 @@ namespace RPG.Control
                 {
                     _mover.StartMoveAction(_hit.point);
                 }
+
                 return true;
             }
+
             return false;
         }
 
