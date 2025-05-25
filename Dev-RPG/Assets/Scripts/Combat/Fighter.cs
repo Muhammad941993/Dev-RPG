@@ -30,8 +30,9 @@ namespace RPG.Combat
         // Update is called once per frame
         private void Update()
         {
+            if (!CanAttack(_target)) return;
+
             _timeSinceLastAttack += Time.deltaTime;
-            if (_target == null || _target.IsDead) return;
 
             if (!IsTargetInRange())
             {
@@ -58,9 +59,11 @@ namespace RPG.Combat
             return Vector3.Distance(transform.position, _target.transform.position) < weaponRange;
         }
 
-        public void Attack(CombatTarget combatTarget)
+        public void Attack(GameObject combatTarget)
         {
-            _target = combatTarget.GetComponent<Health>();
+            var target = combatTarget?.GetComponent<Health>();
+            if (!CanAttack(target)) return;
+            _target = target;
             _animator.ResetTrigger(_stopAttackHash);
             _actionScheduler.StartAction(this);
         }

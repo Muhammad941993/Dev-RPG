@@ -1,4 +1,5 @@
 using RPG.Combat;
+using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace RPG.Control
     {
         private Camera _targetCamera;
 
+        private Health _health;
         private Mover _mover;
         private Fighter _fighter;
         private RaycastHit[] _rayHits;
@@ -17,6 +19,7 @@ namespace RPG.Control
         private void Start()
         {
             _targetCamera = Camera.main;
+            _health = GetComponent<Health>();
             _mover = GetComponent<Mover>();
             _fighter = GetComponent<Fighter>();
         }
@@ -24,6 +27,8 @@ namespace RPG.Control
         // Update is called once per frame
         private void Update()
         {
+            if(_health.IsDead) return;
+            
             if (InteractWithCombat()) return;
             if (InteractWithMovement()) return;
         }
@@ -37,9 +42,7 @@ namespace RPG.Control
                 {
                     var target = hit.collider.GetComponent<CombatTarget>();
                     if (target == null) continue;
-                    if (!_fighter.CanAttack(target.GetComponent<Health>())) continue;
-
-                    _fighter.Attack(target);
+                    _fighter.Attack(target.gameObject);
                     return true;
                 }
             }
