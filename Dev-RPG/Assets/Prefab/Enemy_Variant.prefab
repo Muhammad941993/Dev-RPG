@@ -131,6 +131,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseDistance: 5
+  timeAtPatrolPosition: 0
+  patrolSpeedFraction: 0.322
+  patrolPath: {fileID: 0}
 --- !u!1001 &8544564533341988814
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ namespace RPG.Control
     {
         [SerializeField] private float chaseDistance;
         [SerializeField] private float timeAtPatrolPosition;
+        [Range(0,1),SerializeField] private float patrolSpeedFraction;
         [SerializeField] private PatrolPath patrolPath;
 
         private Transform _target;
@@ -72,7 +73,7 @@ namespace RPG.Control
 
             if (_timeScienceArrivePatrolPosition > timeAtPatrolPosition)
             {
-                _mover.StartMoveAction(_currentPatrolPosition);
+                _mover.StartMoveAction(_currentPatrolPosition , patrolSpeedFraction);
             }
         }
 
@@ -88,7 +89,7 @@ namespace RPG.Control
 
         private void SuspiciousBehaviour()
         {
-            _mover.StartMoveAction(transform.position);
+            _mover.StartMoveAction(transform.position , patrolSpeedFraction);
         }
 
         private void AttackBehaviour()

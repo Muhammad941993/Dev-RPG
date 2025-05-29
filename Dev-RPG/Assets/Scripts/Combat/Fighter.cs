@@ -36,7 +36,7 @@ namespace RPG.Combat
 
             if (!IsTargetInRange())
             {
-                _movement.MovementTo(_target.transform.position);
+                _movement.MovementTo(_target.transform.position ,1);
             }
             else
             {
@@ -72,6 +72,7 @@ namespace RPG.Combat
         {
             _target = null;
             _animator.SetTrigger(_stopAttackHash);
+            _movement.Cancle();
         }
 
         // animation Hit
