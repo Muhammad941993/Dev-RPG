@@ -1,31 +1,42 @@
 using System.Collections;
 using UnityEngine;
-[RequireComponent(typeof(CanvasGroup))]
-public class Fader : MonoBehaviour
+
+namespace RPG.SceneManagement
 {
-    private CanvasGroup _canvasGroup;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [RequireComponent(typeof(CanvasGroup))]
+    public class Fader : MonoBehaviour
     {
-        _canvasGroup = GetComponent<CanvasGroup>();
-    }
-    
-    public IEnumerator FadeOut(float duration)
-    {
-        while (_canvasGroup.alpha < 1)
+        private CanvasGroup _canvasGroup;
+
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
         {
-            _canvasGroup.alpha += Time.deltaTime / duration;
-            yield return null;
+            _canvasGroup = GetComponent<CanvasGroup>();
         }
-    }
-    
-    public IEnumerator FadeIn(float duration)
-    {
-        while (_canvasGroup.alpha > 0)
+
+        public void FadeOutImmediate()
         {
-            _canvasGroup.alpha -= Time.deltaTime / duration;
-            yield return null;
+            _canvasGroup.alpha = 1;
         }
-        _canvasGroup.alpha = 0;
+        
+        public IEnumerator FadeOut(float duration)
+        {
+            while (_canvasGroup.alpha < 1)
+            {
+                _canvasGroup.alpha += Time.deltaTime / duration;
+                yield return null;
+            }
+        }
+
+        public IEnumerator FadeIn(float duration)
+        {
+            while (_canvasGroup.alpha > 0)
+            {
+                _canvasGroup.alpha -= Time.deltaTime / duration;
+                yield return null;
+            }
+
+            _canvasGroup.alpha = 0;
+        }
     }
 }

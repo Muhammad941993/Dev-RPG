@@ -1,10 +1,11 @@
 using RPG.Core;
+using RPG.savingSystem;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour ,IAction
+    public class Mover : MonoBehaviour ,IAction , Isaveable
     {
         [SerializeField] private float maxSpeed = 6;
         private Vector3 _target;
@@ -15,7 +16,7 @@ namespace RPG.Movement
         private readonly int _forwardSpeedHash = Animator.StringToHash("forwardSpeed");
 
 
-        void Start()
+        void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
             _actionScheduler = GetComponent<ActionScheduler>();
@@ -45,12 +46,22 @@ namespace RPG.Movement
         {
             MovementTo(hitPoint,speedFraction);
             _actionScheduler.StartAction(this);
-
         }
 
         public void Cancle()
         {
             _agent.isStopped = true;
+        }
+
+        public object CaptureState() => new SerializableVector3(transform.position);
+        
+        public void RestoreState(object state)
+        {
+            var serializableState = (SerializableVector3)state;
+            _agent.enabled = false;
+            transform.position = serializableState.ToVector3();
+            _agent.enabled = true;
+            _actionScheduler.CancleCurrentAction();
         }
     }
 }
