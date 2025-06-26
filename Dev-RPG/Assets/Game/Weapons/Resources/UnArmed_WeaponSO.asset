@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d864f59e14b0141bde677b7da263f4, type: 3}
+  m_Name: UnArmed_WeaponSO
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
+  animatorOverrideController: {fileID: 0}
+  <Range>k__BackingField: 2
+  <Damage>k__BackingField: 5
+  isRightHand: 0
+  <Projectile>k__BackingField: {fileID: 0}

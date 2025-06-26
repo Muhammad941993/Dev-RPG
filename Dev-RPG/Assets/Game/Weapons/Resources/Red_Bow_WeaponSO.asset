@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d864f59e14b0141bde677b7da263f4, type: 3}
+  m_Name: Red_Bow_WeaponSO
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 1414646073024357262, guid: a118b6c6a3cfb5f4981b7f5c4ef656ce, type: 3}
+  <AnimatorOverrideController>k__BackingField: {fileID: 22100000, guid: 3c90ecf43c11ef54089456804a98ddfb, type: 2}
+  <Range>k__BackingField: 15
+  <Damage>k__BackingField: 10
+  isRightHand: 0
+  <Projectile>k__BackingField: {fileID: 5312634623207143460, guid: 1bf09558a4df75046857ecd4238e16ac, type: 3}
