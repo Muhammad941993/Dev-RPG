@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d864f59e14b0141bde677b7da263f4, type: 3}
   m_Name: UnArmed_WeaponSO
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  animatorOverrideController: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: 0}
+  <AnimatorOverrideController>k__BackingField: {fileID: 0}
   <Range>k__BackingField: 2
   <Damage>k__BackingField: 5
+  <PercentageBonus>k__BackingField: 2
   isRightHand: 0
   <Projectile>k__BackingField: {fileID: 0}

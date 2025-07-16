@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PersistentObjectSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject persistentObjectPrefab;
-    
     private static bool _isSpawned;
+    [SerializeField] private GameObject persistentObjectPrefab;
+
     private void Awake()
     {
         if (_isSpawned) return;
@@ -14,7 +14,7 @@ public class PersistentObjectSpawner : MonoBehaviour
 
     private void SpawnPersistentObject()
     {
-        GameObject persistentObject = Instantiate(persistentObjectPrefab);
+        var persistentObject = Instantiate(persistentObjectPrefab);
         DontDestroyOnLoad(persistentObject);
     }
 }

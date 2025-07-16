@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
@@ -7,10 +7,6 @@ namespace RPG.SceneManagement
 {
     public class Portal : MonoBehaviour
     {
-        private enum DestinationIdentifier
-        {
-            A,B,C,D,E,F
-        }
         [SerializeField] private int sceneToLoad = -1;
         [SerializeField] private Transform spawnPosition;
         [SerializeField] private DestinationIdentifier destination;
@@ -27,25 +23,25 @@ namespace RPG.SceneManagement
 
         private void OnTriggerEnter(Collider other)
         {
-            if(!other.CompareTag("Player")) return;
+            if (!other.CompareTag("Player")) return;
             StartCoroutine(TransitionToScene());
         }
 
         private IEnumerator TransitionToScene()
         {
             DontDestroyOnLoad(gameObject);
-            Fader fader = FindFirstObjectByType<Fader>();
+            var fader = FindFirstObjectByType<Fader>();
             var saving = FindFirstObjectByType<SavingWrapper>();
 
             yield return fader.FadeOut(fadeOutDuration);
             saving.Save();
-            
+
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             saving.Load();
 
-            Portal portal = GetOtherPortal();
+            var portal = GetOtherPortal();
             UpdatePlayerPosition(portal);
-            
+
             saving.Save();
 
             yield return _fadeDuration;
@@ -55,7 +51,7 @@ namespace RPG.SceneManagement
 
         private void UpdatePlayerPosition(Portal portal)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            var player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<NavMeshAgent>().Warp(portal.spawnPosition.position);
             player.transform.rotation = portal.spawnPosition.rotation;
         }
@@ -64,11 +60,22 @@ namespace RPG.SceneManagement
         {
             foreach (var portal in FindObjectsByType<Portal>(FindObjectsSortMode.None))
             {
-                if(portal == this) continue;
-                if(portal.destination != destination) continue;
+                if (portal == this) continue;
+                if (portal.destination != destination) continue;
                 return portal;
             }
+
             return null;
+        }
+
+        private enum DestinationIdentifier
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F
         }
     }
 }

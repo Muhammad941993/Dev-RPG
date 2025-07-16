@@ -16,5 +16,6 @@ MonoBehaviour:
   <AnimatorOverrideController>k__BackingField: {fileID: 22100000, guid: 402558b80d16cba45958111c12e3e318, type: 2}
   <Range>k__BackingField: 3
   <Damage>k__BackingField: 10
+  <PercentageBonus>k__BackingField: 10
   isRightHand: 1
   <Projectile>k__BackingField: {fileID: 0}

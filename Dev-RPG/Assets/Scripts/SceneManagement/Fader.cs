@@ -9,7 +9,7 @@ namespace RPG.SceneManagement
         private CanvasGroup _canvasGroup;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
         }
@@ -18,7 +18,7 @@ namespace RPG.SceneManagement
         {
             _canvasGroup.alpha = 1;
         }
-        
+
         public IEnumerator FadeOut(float duration)
         {
             while (_canvasGroup.alpha < 1)

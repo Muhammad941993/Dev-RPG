@@ -60,6 +60,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Variant Archer
       objectReference: {fileID: 0}
+    - target: {fileID: 6605888778219833944, guid: 09eda65d8232fde41a86987d16eaccb2, type: 3}
+      propertyPath: startLevel
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6605888778219833944, guid: 09eda65d8232fde41a86987d16eaccb2, type: 3}
+      propertyPath: characterClass
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8544564533347370130, guid: 09eda65d8232fde41a86987d16eaccb2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

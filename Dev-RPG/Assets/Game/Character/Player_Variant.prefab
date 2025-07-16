@@ -8,9 +8,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1795685066159285957, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
+      propertyPath: startLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795685066159285957, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
+      propertyPath: levelUpEffect
+      value: 
+      objectReference: {fileID: 8814940639228746637, guid: 2a864da247ad55648823fd3b691c73ed, type: 3}
+    - target: {fileID: 1795685066159285957, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
+      propertyPath: characterClass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795685066159285957, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
+      propertyPath: shouldUseModifiers
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5617103009275657879, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
       propertyPath: uniqueIdentifier
       value: player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662338278797195969, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
+      propertyPath: regenerationPercentage
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 5728489892350891737, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -71,7 +91,7 @@ PrefabInstance:
     - target: {fileID: 6228797967535957806, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
       propertyPath: defaultWeaponSo
       value: 
-      objectReference: {fileID: 11400000, guid: edf0e5a6df56fa843894d019104d335b, type: 2}
+      objectReference: {fileID: 11400000, guid: fb030450552b7704787440e4bd7e81ea, type: 2}
     - target: {fileID: 6228797967535957806, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
       propertyPath: leftHandPosition
       value: 
@@ -80,6 +100,10 @@ PrefabInstance:
       propertyPath: rightHandPosition
       value: 
       objectReference: {fileID: 6228177679849747821}
+    - target: {fileID: 6228797967535957806, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
+      propertyPath: timeBetweenAttacks
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8908604445664499632, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
       propertyPath: m_Name
       value: Player_Variant
@@ -98,6 +122,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8908604445664499632, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
       insertIndex: -1
       addedObject: {fileID: -1549095242342130790}
+    - targetCorrespondingSourceObject: {fileID: 8908604445664499632, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8085619016030704471}
   m_SourcePrefab: {fileID: 100100000, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}
 --- !u!1 &5616611645925837139 stripped
 GameObject:
@@ -116,6 +143,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c26b11acb3179e44bd14071908e003f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8085619016030704471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5616611645925837139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c577ab985e6f5b841816fb6223a26c6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  experience: 0
 --- !u!4 &8731390298813007930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5728489892350891737, guid: 9f36f9baa97a1164caadc03d5ff2ac0d, type: 3}

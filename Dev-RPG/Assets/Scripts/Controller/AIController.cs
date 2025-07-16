@@ -1,8 +1,8 @@
+using System;
+using RPG.Attribute;
 using RPG.Combat;
-using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace RPG.Control
 {
@@ -10,49 +10,47 @@ namespace RPG.Control
     {
         [SerializeField] private float chaseDistance;
         [SerializeField] private float timeAtPatrolPosition;
-        [Range(0,1),SerializeField] private float patrolSpeedFraction;
+        [Range(0, 1)] [SerializeField] private float patrolSpeedFraction;
         [SerializeField] private PatrolPath patrolPath;
+        private readonly float _suspiciousTime = 5;
+        private Vector3 _currentPatrolPosition;
 
-        private Transform _target;
-        private Mover _mover;
+        private int _currentPatrolPositionIndex;
         private Fighter _fighter;
-        private Health _health;
 
         private Vector3 _guardPosition;
-        private readonly float _suspiciousTime = 5;
+        private Health _health;
         private float _lastTimeScienceChase = Mathf.Infinity;
+        private Mover _mover;
+
+        private Transform _target;
         private float _timeScienceArrivePatrolPosition = Mathf.Infinity;
 
-        private int _currentPatrolPositionIndex = 0;
-        private Vector3 _currentPatrolPosition;
-        private void Start()
+        private void Awake()
         {
             _target = GameObject.FindGameObjectWithTag("Player").transform;
             _health = GetComponent<Health>();
             _mover = GetComponent<Mover>();
             _fighter = GetComponent<Fighter>();
+        }
 
+        private void Start()
+        {
             _guardPosition = transform.position;
         }
 
         // Update is called once per frame
         private void Update()
         {
-            if(_health.IsDead)return;
-            
+            if (_health.IsDead) return;
+
             if (IsTargetInRange())
-            {
                 AttackBehaviour();
-                
-            }else if (_lastTimeScienceChase < _suspiciousTime)
-            {
+            else if (_lastTimeScienceChase < _suspiciousTime)
                 SuspiciousBehaviour();
-            }
             else
-            {
                 PatrolBehaviour();
-            }
-            
+
             UpdateTimers();
         }
 
@@ -67,14 +65,12 @@ namespace RPG.Control
                     _timeScienceArrivePatrolPosition = 0;
                     _currentPatrolPositionIndex = patrolPath.GetNextIndex(_currentPatrolPositionIndex);
                 }
-                
+
                 _currentPatrolPosition = GetCurrentPatrolPosition();
             }
 
             if (_timeScienceArrivePatrolPosition > timeAtPatrolPosition)
-            {
-                _mover.StartMoveAction(_currentPatrolPosition , patrolSpeedFraction);
-            }
+                _mover.StartMoveAction(_currentPatrolPosition, patrolSpeedFraction);
         }
 
         private Vector3 GetCurrentPatrolPosition()
@@ -89,7 +85,7 @@ namespace RPG.Control
 
         private void SuspiciousBehaviour()
         {
-            _mover.StartMoveAction(transform.position , patrolSpeedFraction);
+            _mover.StartMoveAction(transform.position, patrolSpeedFraction);
         }
 
         private void AttackBehaviour()
@@ -98,18 +94,15 @@ namespace RPG.Control
             _fighter.Attack(_target.gameObject);
         }
 
-        private bool IsTargetInRange() => Vector3.Distance(transform.position, _target.position) <= chaseDistance;
+        private bool IsTargetInRange()
+        {
+            return Vector3.Distance(transform.position, _target.position) <= chaseDistance;
+        }
 
         private void UpdateTimers()
         {
             _lastTimeScienceChase += Time.deltaTime;
             _timeScienceArrivePatrolPosition += Time.deltaTime;
         }
-        
-        // private void OnDrawGizmosSelected()
-        // {
-        //     Gizmos.color = Color.red;
-        //     Gizmos.DrawWireSphere(transform.position, chaseDistance);
-        // }
     }
 }

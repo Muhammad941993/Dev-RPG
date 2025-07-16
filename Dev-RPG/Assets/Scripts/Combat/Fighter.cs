@@ -1,51 +1,51 @@
+using System;
+using System.Collections.Generic;
+using GameDevTV.Utils;
+using RPG.Attribute;
 using RPG.Core;
 using RPG.Movement;
 using RPG.savingSystem;
+using RPG.Stats;
+using Stats;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour, IAction , Isaveable
+    public class Fighter : MonoBehaviour, IAction, Isaveable ,IModifierProvider
     {
         [SerializeField] private float timeBetweenAttacks;
         [SerializeField] private Transform rightHandPosition;
         [SerializeField] private Transform leftHandPosition;
         [SerializeField] private WeaponSO defaultWeaponSo;
-        
-        private float _timeSinceLastAttack;
-        private Health _target;
-        private Mover _movement;
-        private ActionScheduler _actionScheduler;
-        private Animator _animator;
-        private WeaponSO _currentWeaponSo;
 
         private readonly int _attackHash = Animator.StringToHash("attack");
         private readonly int _stopAttackHash = Animator.StringToHash("stopAttack");
+        private ActionScheduler _actionScheduler;
+        private Animator _animator;
+
+        private LazyValue<WeaponSO> _currentWeaponSo;
+        private Mover _movement;
 
         private GameObject _oldWeapon;
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        private void Start()
+        private Health _target;
+
+        private float _timeSinceLastAttack;
+        private BaseStats _baseStats;
+
+        private void Awake()
         {
             _animator = GetComponent<Animator>();
             _movement = GetComponent<Mover>();
             _actionScheduler = GetComponent<ActionScheduler>();
+            _baseStats = GetComponent<BaseStats>();
 
-            if (!_currentWeaponSo)
-            {
-                EquipWeapon(defaultWeaponSo);
-            }
+            _currentWeaponSo = new LazyValue<WeaponSO>(SetUpWeapon);
         }
 
-        public void EquipWeapon(WeaponSO weapon)
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        private void Start()
         {
-            _currentWeaponSo = weapon;
-            if (_oldWeapon != null)
-            {
-                Destroy(_oldWeapon);
-            }
-           
-            _oldWeapon = _currentWeaponSo.Spawn(rightHandPosition,leftHandPosition,_animator);
+            _currentWeaponSo.ForceInit();
         }
 
         // Update is called once per frame
@@ -57,28 +57,69 @@ namespace RPG.Combat
 
             if (!IsTargetInRange())
             {
-                _movement.MovementTo(_target.transform.position ,1);
+                _movement.MovementTo(_target.transform.position, 1);
             }
             else
             {
-                _movement.Cancle();
+                _movement.Cancel();
                 AttackBehaviour();
             }
         }
+
+        public void Cancel()
+        {
+            _target = null;
+            _animator.SetTrigger(_stopAttackHash);
+            _movement.Cancel();
+        }
+
+
+        public object CaptureState()
+        {
+            return _currentWeaponSo.value.name;
+        }
+
+        public void RestoreState(object state)
+        {
+            var weaponName = state as string;
+
+            var weaponSo = Resources.Load<WeaponSO>(weaponName);
+            EquipWeapon(weaponSo);
+        }
+
+        public void EquipWeapon(WeaponSO weapon)
+        {
+            _currentWeaponSo.value = weapon;
+            AttachWeapon(weapon);
+        }
+        
+        private WeaponSO SetUpWeapon()
+        {
+            AttachWeapon(defaultWeaponSo);
+            return defaultWeaponSo;
+        }
+
+        private void AttachWeapon(WeaponSO weaponSo)
+        {
+            if (_oldWeapon != null) Destroy(_oldWeapon);
+
+            _oldWeapon = weaponSo.Spawn(rightHandPosition, leftHandPosition, _animator);
+        }
+
 
         private void AttackBehaviour()
         {
             if (_timeSinceLastAttack < timeBetweenAttacks) return;
             _timeSinceLastAttack = 0;
             transform.LookAt(_target.transform.position);
-            
+
             // the animation will trigger Hit() event
             _animator.SetTrigger(_attackHash);
         }
 
         private bool IsTargetInRange()
         {
-            return Vector3.Distance(transform.position, _target.transform.position) < _currentWeaponSo.Range;
+            return Vector3.Distance(transform.position, _target.transform.position) < _currentWeaponSo.value.Range;
         }
 
         public void Attack(GameObject combatTarget)
@@ -89,47 +130,47 @@ namespace RPG.Combat
             _animator.ResetTrigger(_stopAttackHash);
             _actionScheduler.StartAction(this);
         }
-
-        public void Cancle()
-        {
-            _target = null;
-            _animator.SetTrigger(_stopAttackHash);
-            _movement.Cancle();
-        }
+        
+        public Health GetTarget() => _target;
+        
 
         // animation Hit
         private void Hit()
         {
-            if (_currentWeaponSo.HasProjectile())
-            {
-                _currentWeaponSo.LaunchProjectile(rightHandPosition,leftHandPosition,_target);
-            }
+            var damage = _baseStats.GetStat(StatType.Damage);
+            print(gameObject.name +" :: " + damage);
+            if (_currentWeaponSo.value.HasProjectile())
+                _currentWeaponSo.value.LaunchProjectile(gameObject,rightHandPosition, leftHandPosition, _target , damage);
             else
-            {
-                _target?.TakeDamage(_currentWeaponSo.Damage);
-            }
+                _target?.TakeDamage(gameObject,damage);
         }
 
         // animation Hit
-        private void Shoot() => Hit();
-        
-        public bool CanAttack(Health target)
+        private void Shoot()
         {
-            if(target == null || target.IsDead) return false;
+            Hit();
+        }
+
+        private bool CanAttack(Health target)
+        {
+            if (target == null || target.IsDead) return false;
             return true;
         }
 
-
-        public object CaptureState()
+        public IEnumerable<float> GetAdditiveModifiers(StatType statType)
         {
-            return _currentWeaponSo.name;
+            if (statType == StatType.Damage)
+            {
+                yield return _currentWeaponSo.value.Damage;
+            }
         }
 
-        public void RestoreState(object state)
+        public IEnumerable<float> GetPercentageModifiers(StatType statType)
         {
-            var weaponName = state as string;
-            var weaponSo = Resources.Load<WeaponSO>(weaponName);
-            EquipWeapon(weaponSo);
+            if (statType == StatType.Damage)
+            {
+                yield return _currentWeaponSo.value.PercentageBonus;
+            }
         }
     }
 }

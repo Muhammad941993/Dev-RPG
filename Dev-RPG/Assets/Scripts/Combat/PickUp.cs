@@ -15,7 +15,7 @@ public class PickUp : MonoBehaviour
 
         StartCoroutine(DisableForSecond(disableTime));
     }
-    
+
     private IEnumerator DisableForSecond(float time)
     {
         EnablePickUp(false);
@@ -27,9 +27,6 @@ public class PickUp : MonoBehaviour
     {
         GetComponent<BoxCollider>().enabled = enable;
 
-        foreach (Transform trans in transform)
-        {
-            trans.gameObject.SetActive(enable);
-        }
+        foreach (Transform trans in transform) trans.gameObject.SetActive(enable);
     }
 }
