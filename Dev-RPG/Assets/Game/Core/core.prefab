@@ -89,7 +89,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4824050742019892607}
   - component: {fileID: 4432464326007587379}
-  - component: {fileID: 3360225783912961786}
   - component: {fileID: 3472256631737627822}
   m_Layer: 0
   m_Name: Camera
@@ -106,11 +105,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4191156000996451462}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.016885571, y: 0.9800766, z: -0.17335272, w: -0.0954652}
-  m_LocalPosition: {x: 23.45676, y: 5.430218, z: 37.599487}
+  m_LocalRotation: {x: -0.022164261, y: 0.96870494, z: -0.22870564, w: -0.09387888}
+  m_LocalPosition: {x: 35.561478, y: 6.4725814, z: 41.470394}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5677836649654621455}
   m_Father: {fileID: 7171254298209816994}
   m_LocalEulerAnglesHint: {x: 0, y: -0.04, z: 0}
 --- !u!20 &4432464326007587379
@@ -164,14 +164,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &3360225783912961786
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4191156000996451462}
-  m_Enabled: 1
 --- !u!114 &3472256631737627822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +207,7 @@ GameObject:
   - component: {fileID: 7674756572548328906}
   - component: {fileID: 2905891218748172404}
   - component: {fileID: 2460078788382614828}
+  - component: {fileID: 4701843375818923116}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -230,8 +223,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6803616735260477998}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.016885571, y: 0.9800766, z: -0.17335272, w: -0.0954652}
-  m_LocalPosition: {x: 23.45676, y: 5.430218, z: 37.599487}
+  m_LocalRotation: {x: -0.022173675, y: 0.968682, z: -0.22880277, w: -0.09387666}
+  m_LocalPosition: {x: 35.561466, y: 6.472679, z: 41.47034}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -311,6 +304,19 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!114 &4701843375818923116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6803616735260477998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LookAtOffset: {x: 0, y: 1, z: 0}
 --- !u!1 &7560832495347713071
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,6 +414,46 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &7899594719742171261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5677836649654621455}
+  - component: {fileID: 745705449342907755}
+  m_Layer: 0
+  m_Name: micBoom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5677836649654621455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7899594719742171261}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.454, z: 10.245}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4824050742019892607}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &745705449342907755
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7899594719742171261}
+  m_Enabled: 1
 --- !u!1 &9062210346891917442
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,6 +516,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6927289102187428301, guid: 020284a7c3f90a948b53acfec78fae59, type: 3}
+      propertyPath: defaultWeaponSo
+      value: 
+      objectReference: {fileID: 11400000, guid: 935621d48cfe45643b4c787f44f21e46, type: 2}
     - target: {fileID: 8731390298813007930, guid: 020284a7c3f90a948b53acfec78fae59, type: 3}
       propertyPath: m_LocalPosition.x
       value: 21.26

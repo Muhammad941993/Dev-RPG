@@ -23,10 +23,10 @@ namespace RPG.Combat
         private ActionScheduler _actionScheduler;
         private Animator _animator;
 
-        private LazyValue<WeaponSO> _currentWeaponSo;
+        private WeaponSO _currentWeaponSo;
         private Mover _movement;
 
-        private GameObject _oldWeapon;
+        private Weapon _currentWeapon;
         private Health _target;
 
         private float _timeSinceLastAttack;
@@ -39,13 +39,13 @@ namespace RPG.Combat
             _actionScheduler = GetComponent<ActionScheduler>();
             _baseStats = GetComponent<BaseStats>();
 
-            _currentWeaponSo = new LazyValue<WeaponSO>(SetUpWeapon);
+            _currentWeaponSo = defaultWeaponSo;
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {
-            _currentWeaponSo.ForceInit();
+            AttachWeapon(_currentWeaponSo);
         }
 
         // Update is called once per frame
@@ -55,7 +55,7 @@ namespace RPG.Combat
 
             _timeSinceLastAttack += Time.deltaTime;
 
-            if (!IsTargetInRange())
+            if (!IsTargetInRange(_target.transform))
             {
                 _movement.MovementTo(_target.transform.position, 1);
             }
@@ -76,7 +76,7 @@ namespace RPG.Combat
 
         public object CaptureState()
         {
-            return _currentWeaponSo.value.name;
+            return _currentWeaponSo.name;
         }
 
         public void RestoreState(object state)
@@ -89,21 +89,15 @@ namespace RPG.Combat
 
         public void EquipWeapon(WeaponSO weapon)
         {
-            _currentWeaponSo.value = weapon;
+            _currentWeaponSo = weapon;
             AttachWeapon(weapon);
-        }
-        
-        private WeaponSO SetUpWeapon()
-        {
-            AttachWeapon(defaultWeaponSo);
-            return defaultWeaponSo;
         }
 
         private void AttachWeapon(WeaponSO weaponSo)
         {
-            if (_oldWeapon != null) Destroy(_oldWeapon);
+            if (_currentWeapon != null) Destroy(_currentWeapon);
 
-            _oldWeapon = weaponSo.Spawn(rightHandPosition, leftHandPosition, _animator);
+            _currentWeapon = weaponSo.Spawn(rightHandPosition, leftHandPosition, _animator);
         }
 
 
@@ -117,9 +111,9 @@ namespace RPG.Combat
             _animator.SetTrigger(_attackHash);
         }
 
-        private bool IsTargetInRange()
+        private bool IsTargetInRange(Transform target)
         {
-            return Vector3.Distance(transform.position, _target.transform.position) < _currentWeaponSo.value.Range;
+            return Vector3.Distance(transform.position, target.position) < _currentWeaponSo.Range;
         }
 
         public void Attack(GameObject combatTarget)
@@ -138,9 +132,11 @@ namespace RPG.Combat
         private void Hit()
         {
             var damage = _baseStats.GetStat(StatType.Damage);
-            print(gameObject.name +" :: " + damage);
-            if (_currentWeaponSo.value.HasProjectile())
-                _currentWeaponSo.value.LaunchProjectile(gameObject,rightHandPosition, leftHandPosition, _target , damage);
+            
+            _currentWeapon?.OnHit();
+            
+            if (_currentWeaponSo.HasProjectile())
+                _currentWeaponSo.LaunchProjectile(gameObject,rightHandPosition, leftHandPosition, _target , damage);
             else
                 _target?.TakeDamage(gameObject,damage);
         }
@@ -154,6 +150,7 @@ namespace RPG.Combat
         private bool CanAttack(Health target)
         {
             if (target == null || target.IsDead) return false;
+            if(!_movement.CanMoveTo(target.transform.position) && !IsTargetInRange(target.transform)) return false;
             return true;
         }
 
@@ -161,7 +158,7 @@ namespace RPG.Combat
         {
             if (statType == StatType.Damage)
             {
-                yield return _currentWeaponSo.value.Damage;
+                yield return _currentWeaponSo.Damage;
             }
         }
 
@@ -169,7 +166,7 @@ namespace RPG.Combat
         {
             if (statType == StatType.Damage)
             {
-                yield return _currentWeaponSo.value.PercentageBonus;
+                yield return _currentWeaponSo.PercentageBonus;
             }
         }
     }

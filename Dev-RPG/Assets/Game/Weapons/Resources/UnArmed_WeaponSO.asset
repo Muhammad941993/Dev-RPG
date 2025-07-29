@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d864f59e14b0141bde677b7da263f4, type: 3}
   m_Name: UnArmed_WeaponSO
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: -4249527640824927958, guid: 1bbc9dab7005cfa42ab07efe7ee32310, type: 3}
   <AnimatorOverrideController>k__BackingField: {fileID: 0}
   <Range>k__BackingField: 2
   <Damage>k__BackingField: 5

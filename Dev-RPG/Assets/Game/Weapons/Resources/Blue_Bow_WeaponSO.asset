@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d864f59e14b0141bde677b7da263f4, type: 3}
   m_Name: Blue_Bow_WeaponSO
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 1414646073024357262, guid: a118b6c6a3cfb5f4981b7f5c4ef656ce, type: 3}
+  <Prefab>k__BackingField: {fileID: 6078161507560866507, guid: a118b6c6a3cfb5f4981b7f5c4ef656ce, type: 3}
   <AnimatorOverrideController>k__BackingField: {fileID: 22100000, guid: 3c90ecf43c11ef54089456804a98ddfb, type: 2}
   <Range>k__BackingField: 15
-  <Damage>k__BackingField: 10
+  <Damage>k__BackingField: 1
+  <PercentageBonus>k__BackingField: 0
   isRightHand: 0
-  isHoming: 1
   <Projectile>k__BackingField: {fileID: 3858509044593804924, guid: 4f3c31630e907b1489b1c2935d19c74c, type: 3}

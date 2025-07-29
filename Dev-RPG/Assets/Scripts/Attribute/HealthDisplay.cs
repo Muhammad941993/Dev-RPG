@@ -8,7 +8,6 @@ namespace RPG.Attribute
     {
         private Text _healthText;
         private Health _health;
-        private float _maxHealth;
 
         private void Awake()
         {
@@ -16,15 +15,10 @@ namespace RPG.Attribute
             _healthText = GetComponent<Text>();
         }
 
-        void Start()
-        {
-            _maxHealth = _health.GetMaxHealth();
-        }
-
         // Update is called once per frame
         private void Update()
         {
-            _healthText.text = $"{_health.GetHealth():0} / {_maxHealth:0}";
+            _healthText.text = $"{_health.GetHealth():0} / {_health.GetMaxHealth():0}";
         }
     }
 }

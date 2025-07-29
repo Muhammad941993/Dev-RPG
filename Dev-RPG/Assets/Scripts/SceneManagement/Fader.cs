@@ -7,6 +7,7 @@ namespace RPG.SceneManagement
     public class Fader : MonoBehaviour
     {
         private CanvasGroup _canvasGroup;
+        private Coroutine _activeCoroutine;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Awake()
@@ -19,24 +20,31 @@ namespace RPG.SceneManagement
             _canvasGroup.alpha = 1;
         }
 
-        public IEnumerator FadeOut(float duration)
+        public Coroutine FadeOut(float duration)
         {
-            while (_canvasGroup.alpha < 1)
-            {
-                _canvasGroup.alpha += Time.deltaTime / duration;
-                yield return null;
-            }
+            return Fade(1,duration);
+        }
+        
+        public Coroutine FadeIn(float duration)
+        {
+            return Fade(0,duration);
         }
 
-        public IEnumerator FadeIn(float duration)
+        private Coroutine Fade(float target, float duration)
         {
-            while (_canvasGroup.alpha > 0)
+            if (_activeCoroutine != null) StopCoroutine(_activeCoroutine);
+            
+            _activeCoroutine = StartCoroutine(FadeRoutine(target,duration));
+            return _activeCoroutine;
+        }
+        
+        private IEnumerator FadeRoutine(float target ,float duration)
+        {
+            while (!Mathf.Approximately(_canvasGroup.alpha, target))
             {
-                _canvasGroup.alpha -= Time.deltaTime / duration;
+                _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, target, Time.deltaTime / duration);
                 yield return null;
             }
-
-            _canvasGroup.alpha = 0;
         }
     }
 }

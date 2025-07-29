@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WeaponSO", menuName = "Weapons/WeaponSO")]
 public class WeaponSO : ScriptableObject
 {
-    [field: SerializeField] public GameObject Prefab { get; private set; }
+    [field: SerializeField] public Weapon Prefab { get; private set; }
     [field: SerializeField] public AnimatorOverrideController AnimatorOverrideController { get; private set; }
     [field: SerializeField] public float Range { get; private set; }
     [field: SerializeField] public float Damage { get; private set; }
@@ -15,9 +15,9 @@ public class WeaponSO : ScriptableObject
     [SerializeField] private bool isRightHand;
     [field: SerializeField] public Projectile Projectile { get; private set; }
 
-    public GameObject Spawn(Transform rightHandPosition, Transform leftHandTransform, Animator animator)
+    public Weapon Spawn(Transform rightHandPosition, Transform leftHandTransform, Animator animator)
     {
-        GameObject temp = null;
+        Weapon temp = null;
         if (Prefab != null) temp = Instantiate(Prefab, GetWeaponHand(rightHandPosition, leftHandTransform));
         
         var overrideController = animator.runtimeAnimatorController as AnimatorOverrideController;

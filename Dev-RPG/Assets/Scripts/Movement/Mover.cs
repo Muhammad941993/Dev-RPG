@@ -2,12 +2,16 @@ using RPG.Core;
 using RPG.savingSystem;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 namespace RPG.Movement
 {
     public class Mover : MonoBehaviour, IAction, Isaveable
     {
+        [SerializeField] private float maxPathLength = 50;
         [SerializeField] private float maxSpeed = 6;
+        
+        
         private readonly int _forwardSpeedHash = Animator.StringToHash("forwardSpeed");
         private ActionScheduler _actionScheduler;
         private NavMeshAgent _agent;
@@ -26,6 +30,31 @@ namespace RPG.Movement
         private void Update()
         {
             UpdateAnimation();
+        }
+
+        public bool CanMoveTo(Vector3 targetPosition)
+        {
+            
+            var navMeshPath = new NavMeshPath();
+            var hasPath = NavMesh.CalculatePath(transform.position,targetPosition,NavMesh.AllAreas,navMeshPath);
+            if (!hasPath) return false;
+            if(navMeshPath.status != NavMeshPathStatus.PathComplete) return false;
+            
+            if(CalculatePathLength(navMeshPath) > maxPathLength) return false;
+
+            return true;
+        }
+        
+        private float CalculatePathLength(NavMeshPath navMeshPath)
+        {
+            float distance = 0;
+            if(navMeshPath.corners.Length < 2) return distance;
+
+            for (var i = 0; i < navMeshPath.corners.Length-1; i++)
+            {
+                distance += Vector3.Distance(navMeshPath.corners[i], navMeshPath.corners[i+1]);
+            }
+            return distance;
         }
 
         public void Cancel()
@@ -66,5 +95,6 @@ namespace RPG.Movement
             MovementTo(hitPoint, speedFraction);
             _actionScheduler.StartAction(this);
         }
+
     }
 }

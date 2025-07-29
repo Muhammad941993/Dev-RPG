@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d864f59e14b0141bde677b7da263f4, type: 3}
   m_Name: Sword_WeaponSO
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 3175734325594739043, guid: af42b2009e1ca694797447443151d846, type: 3}
+  <Prefab>k__BackingField: {fileID: -4249527640824927958, guid: af42b2009e1ca694797447443151d846, type: 3}
   <AnimatorOverrideController>k__BackingField: {fileID: 22100000, guid: 402558b80d16cba45958111c12e3e318, type: 2}
   <Range>k__BackingField: 3
   <Damage>k__BackingField: 10

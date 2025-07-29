@@ -12,7 +12,9 @@ namespace RPG.Control
         [SerializeField] private float timeAtPatrolPosition;
         [Range(0, 1)] [SerializeField] private float patrolSpeedFraction;
         [SerializeField] private PatrolPath patrolPath;
-        private readonly float _suspiciousTime = 5;
+        [SerializeField]private float suspiciousTime = 5;
+        [SerializeField] private float aggroCollDownTime = 5;
+        [SerializeField] private float shoutDistance = 5;
         private Vector3 _currentPatrolPosition;
 
         private int _currentPatrolPositionIndex;
@@ -21,6 +23,8 @@ namespace RPG.Control
         private Vector3 _guardPosition;
         private Health _health;
         private float _lastTimeScienceChase = Mathf.Infinity;
+        private float _timeScienceAggravated = Mathf.Infinity;
+
         private Mover _mover;
 
         private Transform _target;
@@ -46,12 +50,17 @@ namespace RPG.Control
 
             if (IsTargetInRange())
                 AttackBehaviour();
-            else if (_lastTimeScienceChase < _suspiciousTime)
+            else if (_lastTimeScienceChase < suspiciousTime)
                 SuspiciousBehaviour();
             else
                 PatrolBehaviour();
 
             UpdateTimers();
+        }
+
+        public void Aggravate()
+        {
+            _timeScienceAggravated = 0;
         }
 
 
@@ -92,17 +101,31 @@ namespace RPG.Control
         {
             _lastTimeScienceChase = 0;
             _fighter.Attack(_target.gameObject);
+            AggravateNearbyEnemies();
+        }
+
+        private void AggravateNearbyEnemies()
+        {
+            var colliders = Physics.OverlapSphere(transform.position, shoutDistance);
+            AIController aiController;
+            foreach (var collider in colliders)
+            {
+                aiController = collider.GetComponent<AIController>();
+                if(aiController == null) continue;
+                aiController.Aggravate();
+            }
         }
 
         private bool IsTargetInRange()
         {
-            return Vector3.Distance(transform.position, _target.position) <= chaseDistance;
+            return Vector3.Distance(transform.position, _target.position) <= chaseDistance || _timeScienceAggravated < aggroCollDownTime;
         }
 
         private void UpdateTimers()
         {
             _lastTimeScienceChase += Time.deltaTime;
             _timeScienceArrivePatrolPosition += Time.deltaTime;
+            _timeScienceAggravated += Time.deltaTime;
         }
     }
 }
