@@ -15,7 +15,7 @@ MonoBehaviour:
   <Prefab>k__BackingField: {fileID: 6078161507560866507, guid: a118b6c6a3cfb5f4981b7f5c4ef656ce, type: 3}
   <AnimatorOverrideController>k__BackingField: {fileID: 22100000, guid: 3c90ecf43c11ef54089456804a98ddfb, type: 2}
   <Range>k__BackingField: 15
-  <Damage>k__BackingField: 10
+  <Damage>k__BackingField: 5
   <PercentageBonus>k__BackingField: 0
   isRightHand: 0
   <Projectile>k__BackingField: {fileID: 5312634623207143460, guid: 1bf09558a4df75046857ecd4238e16ac, type: 3}

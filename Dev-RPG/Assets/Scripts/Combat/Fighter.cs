@@ -95,7 +95,7 @@ namespace RPG.Combat
 
         private void AttachWeapon(WeaponSO weaponSo)
         {
-            if (_currentWeapon != null) Destroy(_currentWeapon);
+            if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
 
             _currentWeapon = weaponSo.Spawn(rightHandPosition, leftHandPosition, _animator);
         }

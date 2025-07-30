@@ -23,12 +23,6 @@ namespace RPG.Combat
 
         private void Update()
         {
-            if (_target == null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
             transform.Translate(Vector3.forward * (speed * Time.deltaTime));
 
             if (isHoming && _target.IsDead)
